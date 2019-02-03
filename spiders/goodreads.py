@@ -16,12 +16,7 @@ class GoodReadsSpider(scrapy.Spider):
             loader.add_xpath('text', ".//div[@class='quoteText']/text()[1]")
             loader.add_xpath('author', ".//span[@class='authorOrTitle']/text()")
             loader.add_xpath('tags', ".//div[@class='greyText smallText left']/a/text()")
-
-            yield {
-                'text': quote.xpath(".//div[@class='quoteText']/text()[1]").extract_first(),
-                'author': quote.xpath(".//span[@class='authorOrTitle']/text()").extract_first(),
-                'tags': quote.xpath(".//div[@class='greyText smallText left']/a/text()").extract(),
-            }
+            yield loader.load_item()
         next_page= response.selector.xpath("//a[@class='next_page']/@href").extract_first()
 
         if next_page is not None:
